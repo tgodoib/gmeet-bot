@@ -1,9 +1,12 @@
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+const path = require("path");
 const app = require('express')();
+const bodyParser = require('body-parser');
 
 puppeteer.use(StealthPlugin())
 require('dotenv').config()
+app.use(bodyParser.urlencoded({extended: true}));
 
 async function run(link, name) {
     try {
@@ -32,26 +35,34 @@ async function run(link, name) {
         await page.click('#yDmH0d > c-wiz > div > div > div:nth-child(15) > div.crqnQb > div > div.gAGjv > div.vgJExf > div > div > div.d7iDfe.NONs6c > div.shTJQe > div.jtn8y > div.XCoPyb > div:nth-child(1) > button')
 
         await browser.close();
+        browser.process().kill();
     } catch (e) {
         console.log(e);
     }
 }
 
-(async () => {
-    let i = 0;
-    while (true) {
-        await run(process.argv[2] || process.env.MEET_LINK, process.env.USER_NAME + " " + i);
-        i++;
-    }
-})();
+let link = "";
+
+async function try_run() {
+    if (link !== "") await run(link, process.env.USER_NAME);
+    setTimeout(try_run, 1000);
+}
+
+setTimeout(try_run, 1000);
+
 
 app.get("/", (req, res) => {
-    res.send("Express on Vercel");
+    res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-// Initialize server
-app.listen(5000, () => {
-    console.log("Running on port 5000.");
+app.post("/run", (req, res) => {
+    if (Object.keys(req.body).includes('start')) link = req.body.link;
+    else link = "";
+    res.sendStatus(200);
+});
+
+app.listen(8080, () => {
+    console.log("Running on port 8080.");
 });
 
 module.exports = app;

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bot Meet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+    </style>
+
+</head>
+<body>
+
+
+<form action="/run" method="post">
+    <label for="link">Insira o link do meet</label>
+    <br/>
+    <input type="url" name="link" id="link" placeholder="Link do Meet">
+    <br/><br/>
+    <div>
+        <button name="start" value="true">Começar</button>
+        <button name="stop" value="true">Parar</button>
+    </div>
+</form>
+
+</body>
+</html>
