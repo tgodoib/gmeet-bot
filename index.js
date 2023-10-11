@@ -1,8 +1,8 @@
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
+const app = require('express')();
 
 puppeteer.use(StealthPlugin())
-
 require('dotenv').config()
 
 async function run(link, name) {
@@ -45,3 +45,13 @@ async function run(link, name) {
     }
 })();
 
+app.get("/", (req, res) => {
+    res.send("Express on Vercel");
+});
+
+// Initialize server
+app.listen(5000, () => {
+    console.log("Running on port 5000.");
+});
+
+module.exports = app;
